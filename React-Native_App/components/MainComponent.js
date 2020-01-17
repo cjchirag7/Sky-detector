@@ -28,6 +28,8 @@ import Login from './LoginComponent';
 import History from './HistoryComponent';
 import Home from './HomeComponent';
 import Contact from './ContactComponent';
+import GetMask from './GetMaskComponent';
+import ViewMask from './ViewMask';
 // import Favorites from './FavoriteComponent';
 
 // const mapStateToProps = state => {
@@ -45,6 +47,66 @@ import Contact from './ContactComponent';
 //   fetchPromos: () => dispatch(fetchPromos()),
 //   fetchLeaders: () => dispatch(fetchLeaders())
 // });
+
+const HomeNavigator = createStackNavigator(
+  {
+    Home: { screen: props => <Home {...{ props }} /> }
+  },
+  {
+    navigationOptions: ({ navigation }) => ({
+      headerStyle: {
+        backgroundColor: '#512DA8'
+      },
+      headerTitle: 'Home',
+      headerTintColor: '#fff',
+      headerTitleStyle: {
+        color: '#fff'
+      },
+      headerLeft: (
+        <Icon
+          name='menu'
+          size={24}
+          color='white'
+          containerStyle={{ paddingLeft: 10 }}
+          onPress={() => navigation.toggleDrawer()}
+        />
+      )
+    })
+  }
+);
+
+const GetMaskNavigator = createStackNavigator(
+  {
+    GetMask: {
+      screen: props => <GetMask {...props} />,
+      navigationOptions: ({ navigation }) => ({
+        headerLeft: (
+          <Icon
+            name='menu'
+            size={24}
+            color='white'
+            containerStyle={{ paddingLeft: 10 }}
+            onPress={() => navigation.toggleDrawer()}
+          />
+        )
+      })
+    },
+    ViewMask: { screen: props => <ViewMask {...props} /> }
+  },
+  {
+    initialRouteName: 'GetMask',
+    navigationOptions: {
+      headerStyle: {
+        backgroundColor: '#512DA8'
+      },
+      headerTintColor: '#fff',
+      headerTitleStyle: {
+        color: '#fff'
+      },
+      headerTitle: 'Get Mask'
+    }
+  }
+);
 
 const HistoryNavigator = createStackNavigator(
   {
@@ -76,33 +138,6 @@ const HistoryNavigator = createStackNavigator(
       },
       headerTitle: 'History'
     }
-  }
-);
-
-const HomeNavigator = createStackNavigator(
-  {
-    Home: { screen: props => <Home {...{ props }} /> }
-  },
-  {
-    navigationOptions: ({ navigation }) => ({
-      headerStyle: {
-        backgroundColor: '#512DA8'
-      },
-      headerTitle: 'Home',
-      headerTintColor: '#fff',
-      headerTitleStyle: {
-        color: '#fff'
-      },
-      headerLeft: (
-        <Icon
-          name='menu'
-          size={24}
-          color='white'
-          containerStyle={{ paddingLeft: 10 }}
-          onPress={() => navigation.toggleDrawer()}
-        />
-      )
-    })
   }
 );
 
@@ -203,6 +238,21 @@ const MainNavigator = createDrawerNavigator(
         drawerLabel: 'Home',
         drawerIcon: ({ tintColor, focused }) => (
           <Icon name='home' type='font-awesome' size={24} color={tintColor} />
+        )
+      }
+    },
+    GetMask: {
+      screen: GetMaskNavigator,
+      navigationOptions: {
+        title: 'Get Mask',
+        drawerLabel: 'Get Mask',
+        drawerIcon: ({ tintColor, focused }) => (
+          <Icon
+            name='file-image-o'
+            type='font-awesome'
+            size={20}
+            color={tintColor}
+          />
         )
       }
     },

@@ -25,8 +25,9 @@ class Contact extends Component {
         1.Chirag Jain\n
         2. Saharsh Singh\n
         3. Ayush Singh\n
-        4. Prince\n
-        5. Sachin`}
+        4. Prince Arya\n
+        5. Sachin Shukla\n
+        6. Kavya `}
             </Text>
             <Button
               title='Give feedback'
