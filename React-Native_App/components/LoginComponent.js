@@ -5,16 +5,18 @@ import {
   Text,
   ScrollView,
   Image,
-  Platform
+  Platform,
+  Alert
 } from 'react-native';
 import { Input, CheckBox, Button, Icon } from 'react-native-elements';
 // import { Camera, Asset } from 'expo';
 import * as SecureStore from 'expo-secure-store';
 import { createBottomTabNavigator } from 'react-navigation';
-import { imageUrl } from '../shared/baseUrl';
+import { imageUrl, baseUrl } from '../shared/baseUrl';
 import * as Permissions from 'expo-permissions';
 import * as ImagePicker from 'expo-image-picker';
 import * as ImageManipulator from 'expo-image-manipulator';
+
 class LoginTab extends Component {
   constructor(props) {
     super(props);
@@ -71,6 +73,54 @@ class LoginTab extends Component {
       SecureStore.deleteItemAsync('userinfo').catch(error =>
         console.log('Could not delete user info', error)
       );
+    this.login(this.state.username, this.state.password);
+  }
+
+  login(username, password) {
+    return fetch(`${baseUrl}login`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      form: {
+        username: username,
+        password: password
+      },
+      credentials: 'same-origin'
+    })
+      .then(
+        response => {
+          if (response.ok) {
+            return response;
+          }
+
+          const error = new Error(
+            `Error ${response.status}: ${response.statusText}`
+          );
+          error.response = response;
+          throw error;
+        },
+        error => {
+          const errmess = new Error(error.message);
+          throw errmess;
+        }
+      )
+      .then(response => response.json())
+      .then(response => {
+        if (response.success) {
+          SecureStore.setItemAsync(
+            'userStatus',
+            JSON.stringify({ loggedIn: true })
+          ).catch(error => console.log('Could not save user info', error));
+          Alert.alert('Login Successful');
+        } else {
+          Alert.alert('Username and Password donot match. \n Please try again');
+        }
+      })
+      .catch(error => {
+        console.log(error.message);
+        Alert.alert(error.message);
+      });
   }
 
   render() {
@@ -90,6 +140,7 @@ class LoginTab extends Component {
             onChangeText={password => this.setState({ password })}
             value={this.state.password}
             containerStyle={styles.formInput}
+            secureTextEntry={true}
           />
           <CheckBox
             title='Remember Me'
@@ -210,6 +261,51 @@ class RegisterTab extends Component {
     console.log(processedImage);
     this.setState({ imageUri: processedImage.uri });
   };
+  register(name, username, password, focalLength, height, width) {
+    return fetch(`${baseUrl}register`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      form: {
+        name: name,
+        username: username,
+        password: password,
+        focalLength: focalLength,
+        height: height,
+        width: width
+      },
+      credentials: 'same-origin'
+    })
+      .then(
+        response => {
+          if (response.ok) {
+            return response;
+          }
+
+          const error = new Error(
+            `Error ${response.status}: ${response.statusText}`
+          );
+          error.response = response;
+          throw error;
+        },
+        error => {
+          const errmess = new Error(error.message);
+          throw errmess;
+        }
+      )
+      .then(response => response.json())
+      .then(response => {
+        if (response.msg) {
+          Alert.alert(response.msg);
+        } else {
+          Alert.alert('Registration Failed \n' + response.error);
+        }
+      })
+      .catch(error => {
+        console.log(error.message);
+      });
+  }
 
   static navigationOptions = {
     title: 'Register',
@@ -225,6 +321,8 @@ class RegisterTab extends Component {
 
   handleRegister() {
     console.log(JSON.stringify(this.state));
+
+    const { name, username, password, focalLength, height, width } = this.state;
     if (this.state.remember)
       SecureStore.setItemAsync(
         'userinfo',
@@ -233,6 +331,7 @@ class RegisterTab extends Component {
           password: this.state.password
         })
       ).catch(error => console.log('Could not save user info', error));
+    this.register(name, username, password, focalLength, height, width);
   }
 
   render() {
@@ -270,6 +369,7 @@ class RegisterTab extends Component {
             onChangeText={password => this.setState({ password })}
             value={this.state.password}
             containerStyle={styles.formInput}
+            secureTextEntry={true}
           />
           <Input
             placeholder='Name'
