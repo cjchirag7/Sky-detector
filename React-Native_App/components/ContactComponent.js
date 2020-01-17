@@ -18,9 +18,9 @@ class Contact extends Component {
     return (
       <View>
         <Animatable.View animation='fadeInDown' duration={2000} delay={1000}>
-          <Card title='Contact Information'>
+          <Card title='Contact Us'>
             <Text>
-              {`
+              {`\n
         This app was developed by : \n
         1.Chirag Jain\n
         2. Saharsh Singh\n

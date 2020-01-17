@@ -17,9 +17,9 @@ import * as Animatable from 'react-native-animatable';
 //   };
 // };
 
-class Menu extends Component {
+class History extends Component {
   static navigationOptions = {
-    title: 'Menu'
+    title: 'History'
   };
   constructor(props) {
     super(props);
@@ -27,7 +27,7 @@ class Menu extends Component {
 
   render() {
     const { navigate } = this.props.navigation;
-    const renderMenuItem = ({ item, index }) => {
+    const renderHistoryItem = ({ item, index }) => {
       return (
         <Animatable.View animation='fadeInRightBig' duration={2000}>
           <Tile
@@ -50,12 +50,12 @@ class Menu extends Component {
     return (
       <FlatList
         data={DISHES.dishes}
-        renderItem={renderMenuItem}
+        renderItem={renderHistoryItem}
         keyExtractor={item => item.id.toString()}
       />
     );
   }
 }
 
-// export default connect(mapStateToProps)(Menu);
-export default Menu;
+// export default connect(mapStateToProps)(History);
+export default History;

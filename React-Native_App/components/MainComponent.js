@@ -25,7 +25,7 @@ import Login from './LoginComponent';
 //   fetchLeaders,
 //   fetchPromos
 // } from '../redux/ActionCreators';
-import Menu from './MenuComponent';
+import History from './HistoryComponent';
 import Home from './HomeComponent';
 import Contact from './ContactComponent';
 // import Favorites from './FavoriteComponent';
@@ -46,10 +46,10 @@ import Contact from './ContactComponent';
 //   fetchLeaders: () => dispatch(fetchLeaders())
 // });
 
-const MenuNavigator = createStackNavigator(
+const HistoryNavigator = createStackNavigator(
   {
-    Menu: {
-      screen: props => <Menu {...props} />,
+    History: {
+      screen: props => <History {...props} />,
       navigationOptions: ({ navigation }) => ({
         headerLeft: (
           <Icon
@@ -58,7 +58,6 @@ const MenuNavigator = createStackNavigator(
             color='white'
             containerStyle={{ paddingLeft: 10 }}
             onPress={() => navigation.toggleDrawer()}
-            hea
           />
         )
       })
@@ -66,7 +65,7 @@ const MenuNavigator = createStackNavigator(
     HistoryDetail: { screen: props => <HistoryDetail {...props} /> }
   },
   {
-    initialRouteName: 'Menu',
+    initialRouteName: 'History',
     navigationOptions: {
       headerStyle: {
         backgroundColor: '#512DA8'
@@ -75,7 +74,7 @@ const MenuNavigator = createStackNavigator(
       headerTitleStyle: {
         color: '#fff'
       },
-      headerTitle: 'Menu'
+      headerTitle: 'History'
     }
   }
 );
@@ -207,13 +206,18 @@ const MainNavigator = createDrawerNavigator(
         )
       }
     },
-    Menu: {
-      screen: MenuNavigator,
+    History: {
+      screen: HistoryNavigator,
       navigationOptions: {
-        title: 'Menu',
-        drawerLabel: 'Menu',
+        title: 'My History',
+        drawerLabel: 'History',
         drawerIcon: ({ tintColor, focused }) => (
-          <Icon name='list' type='font-awesome' size={20} color={tintColor} />
+          <Icon
+            name='history'
+            type='font-awesome'
+            size={20}
+            color={tintColor}
+          />
         )
       }
     },

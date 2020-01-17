@@ -22,6 +22,10 @@ class LoginTab extends Component {
     this.state = {
       username: '',
       password: '',
+      name: '',
+      focalLength: 0,
+      height: 0,
+      width: 0,
       remember: false
     };
   }
@@ -236,7 +240,7 @@ class RegisterTab extends Component {
     return (
       <ScrollView>
         <View style={styles.container}>
-          <View style={styles.imageContainer}>
+          {/* <View style={styles.imageContainer}>
             <Image
               source={{ uri: imageUri }}
               loadingIndicatorSource={require('./images/logo.png')}
@@ -252,7 +256,7 @@ class RegisterTab extends Component {
               onPress={this.getImageFromGallery}
               style={styles.buttons}
             />
-          </View>
+          </View> */}
           <Input
             placeholder='Username'
             leftIcon={{ type: 'font-awesome', name: 'user-o' }}
@@ -268,24 +272,30 @@ class RegisterTab extends Component {
             containerStyle={styles.formInput}
           />
           <Input
-            placeholder='First Name'
+            placeholder='Name'
             leftIcon={{ type: 'font-awesome', name: 'user-o' }}
-            onChangeText={firstname => this.setState({ firstname })}
-            value={this.state.firstname}
+            onChangeText={name => this.setState({ name })}
+            value={this.state.name}
             containerStyle={styles.formInput}
           />
+          <Text>Camera Specifications</Text>
           <Input
-            placeholder='Last Name'
-            leftIcon={{ type: 'font-awesome', name: 'user-o' }}
-            onChangeText={lastname => this.setState({ lastname })}
-            value={this.state.lastname}
-            containerStyle={styles.formInput}
-          />
-          <Input
-            placeholder='Email'
+            placeholder='Focal length (in mm)'
             leftIcon={{ type: 'font-awesome', name: 'envelope-o' }}
-            onChangeText={email => this.setState({ email })}
-            value={this.state.email}
+            onChangeText={focalLength => this.setState({ focalLength })}
+            value={this.state.focalLength}
+            containerStyle={styles.formInput}
+          />
+          <Input
+            placeholder='Height (in mm)'
+            onChangeText={height => this.setState({ height })}
+            value={this.state.height}
+            containerStyle={styles.formInput}
+          />
+          <Input
+            placeholder='Width (in mm)'
+            onChangeText={width => this.setState({ width })}
+            value={this.state.width}
             containerStyle={styles.formInput}
           />
           <CheckBox
