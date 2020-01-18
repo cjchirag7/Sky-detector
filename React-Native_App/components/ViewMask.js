@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { LineChart, Grid } from 'react-native-svg-charts';
 import {
   StyleSheet,
   ScrollView,
@@ -36,6 +35,8 @@ class ViewMask extends Component {
             style={styles.image}
           />
         </View>
+        <Text style={styles.headline}>Plot</Text>
+
         <View style={{ height: 200, flexDirection: 'row' }}>
           <YAxis
             data={data}

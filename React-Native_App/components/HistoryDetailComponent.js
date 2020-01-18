@@ -18,7 +18,7 @@ import { Card, Icon, Rating, Input } from 'react-native-elements';
 // import { baseUrl, imageUrl } from '../shared/baseUrl';
 // import { postFavorite, postComment } from '../redux/ActionCreators';
 import * as Animatable from 'react-native-animatable';
-import { DISHES } from '../shared/dishes.js';
+import { HISTORIES } from '../shared/histories.js';
 
 // const mapStateToProps = state => {
 //   return {
@@ -35,7 +35,7 @@ import { DISHES } from '../shared/dishes.js';
 function RenderDish(props) {
   handleViewRef = ref => (this.view = ref);
   // const dish = props.dish;
-  const dish = DISHES[0];
+  const dish = HISTORIESS[0];
   const recognizeDrag = ({ moveX, moveY, dx, dy }) => {
     if (dx < -200) return true;
     else return false;
@@ -234,7 +234,7 @@ class HistoryDetail extends Component {
     return (
       <ScrollView>
         <RenderDish
-          dish={DISHES[+dishId]}
+          dish={HISTORIES[+dishId]}
           // favorite={this.props.favorites.some(el => el === dishId)}
           onPress={() => this.markFavorite(dishId)}
           onSelect={() => this.toggleModal()}
