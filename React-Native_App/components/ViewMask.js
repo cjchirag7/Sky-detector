@@ -12,34 +12,36 @@ import { Card, Button, Icon } from 'react-native-elements';
 import * as Permissions from 'expo-permissions';
 import * as ImagePicker from 'expo-image-picker';
 import * as ImageManipulator from 'expo-image-manipulator';
+import { imageUrl } from '../shared/baseUrl';
 
 class ViewMask extends Component {
   constructor(props) {
     super(props);
     const mask = this.props.navigation.getParam('mask');
+    const angles = this.props.navigation.getParam('angles');
     this.state = {
-      imageUri: mask
+      imageUri: imageUrl + mask,
+      angles: JSON.parse(angles)
     };
   }
 
   render() {
-    const { imageUri } = this.state;
-    let data = [50, 10, 40, 95, -4, -24, 85, 91, 35, 53, -53, 24, 50, -20, -80];
+    const { imageUri, angles } = this.state;
     const contentInset = { top: 20, bottom: 20 };
     return (
       <ScrollView>
-        <View>
+        <View style={styles.headContainer}>
           <Image
             source={{ uri: imageUri }}
             loadingIndicatorSource={require('./images/logo.png')}
             style={styles.image}
           />
         </View>
-        <Text style={styles.headline}>Plot</Text>
+        <Text style={styles.headline}>Plot of Angles of Elevation</Text>
 
         <View style={{ height: 200, flexDirection: 'row' }}>
           <YAxis
-            data={data}
+            data={angles}
             contentInset={contentInset}
             svg={{
               fill: 'grey',
@@ -50,7 +52,7 @@ class ViewMask extends Component {
           />
           <LineChart
             style={{ flex: 1, marginLeft: 8 }}
-            data={data}
+            data={angles}
             svg={{ stroke: 'rgb(134, 65, 244)' }}
             contentInset={contentInset}
           >
@@ -79,6 +81,12 @@ const styles = StyleSheet.create({
   },
   buttons: {
     marginTop: 40
+  },
+  headContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginTop: 10,
+    padding: 20
   },
   headline: {
     textAlign: 'center', // <-- the magic

@@ -5,21 +5,20 @@ import {
   Image,
   Platform,
   View,
-  Text
+  Text,
+  Alert
 } from 'react-native';
 import { Card, Button, Icon } from 'react-native-elements';
 import * as Permissions from 'expo-permissions';
 import * as ImagePicker from 'expo-image-picker';
 import * as ImageManipulator from 'expo-image-manipulator';
+import { baseUrl, imageUrl } from '../shared/baseUrl';
+import * as SecureStore from 'expo-secure-store';
 
-const sampleImage =
-  'https://www.google.com/imgres?imgurl=https%3A%2F%2Fimages.pexels.com%2Fphotos%2F912110%2Fpexels-photo-912110.jpeg%3Fauto%3Dcompress%26cs%3Dtinysrgb%26dpr%3D1%26w%3D500&imgrefurl=https%3A%2F%2Fwww.pexels.com%2Fsearch%2Fsky%2F&docid=pZ56kUO_51Z65M&tbnid=bpNcK9O3qS9JIM%3A&vet=10ahUKEwj9xo_Bj4vnAhW64nMBHVEaCC8QMwhjKAAwAA..i&w=500&h=333&bih=669&biw=1366&q=sky%20jpg%20image&ved=0ahUKEwj9xo_Bj4vnAhW64nMBHVEaCC8QMwhjKAAwAA&iact=mrc&uact=8';
 class GetMask extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      imageUri: sampleImage
-    };
+    this.state = { imageUri: 'https://via.placeholder.com/320' };
   }
   componentDidMount() {
     this.getPermissionAsync();
@@ -38,7 +37,7 @@ class GetMask extends Component {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
-      aspect: [4, 3],
+      aspect: [5, 4],
       quality: 1
     });
     if (!result.cancelled) {
@@ -59,7 +58,7 @@ class GetMask extends Component {
     ) {
       let capturedImage = await ImagePicker.launchCameraAsync({
         allowsEditing: true,
-        aspect: [4, 3]
+        aspect: [5, 4]
       });
       if (!capturedImage.cancelled) {
         console.log(capturedImage);
@@ -71,12 +70,81 @@ class GetMask extends Component {
   processImage = async imageUri => {
     let processedImage = await ImageManipulator.manipulateAsync(
       imageUri,
-      [{ resize: { width: 400 } }],
-      { format: 'png' }
+      [{ resize: { width: 320 } }],
+      { format: 'jpeg' }
     );
     console.log(processedImage);
     this.setState({ imageUri: processedImage.uri });
   };
+
+  viewMask() {
+    const { navigate } = this.props.navigation;
+    const { imageUri } = this.state;
+    let filename = imageUri.split('/').pop();
+
+    // Infer the type of the image
+    let match = /\.(\w+)$/.exec(filename);
+    let type = match ? `image/${match[1]}` : `image`;
+    SecureStore.getItemAsync('userStatus')
+      .then(userstat => {
+        let userStatus = JSON.parse(userstat);
+        if (userStatus.loggedIn) {
+          SecureStore.getItemAsync('userinfo')
+            .then(userdata => {
+              let userinfo = JSON.parse(userdata);
+              let username = userinfo.username;
+              // Upload the image using the fetch and FormData APIs
+              let formData = new FormData();
+              // Assume "photo" is the name of the form field the server expects
+              formData.append('image', { uri: imageUri, name: filename, type });
+              formData.append('username', username);
+              return fetch(`${baseUrl}get_mask`, {
+                method: 'POST',
+                body: formData,
+                header: {
+                  'content-type': 'multipart/form-data'
+                },
+                credentials: 'same-origin'
+              })
+                .then(
+                  response => {
+                    if (response.ok) {
+                      return response;
+                    }
+
+                    const error = new Error(
+                      `Error ${response.status}: ${response.statusText}`
+                    );
+                    error.response = response;
+                    throw error;
+                  },
+                  error => {
+                    const errmess = new Error(error.message);
+                    throw errmess;
+                  }
+                )
+                .then(response => response.json())
+                .then(response => {
+                  const { image, mask, angles } = response;
+                  return navigate('ViewMask', { mask: mask, angles: angles });
+                })
+                .catch(error => {
+                  console.log(error.message);
+                  Alert.alert(error.message);
+                });
+            })
+            .catch(error => {
+              console.log(error);
+            });
+        } else {
+          Alert.alert('Please log in to avail this facility.');
+          return;
+        }
+      })
+      .catch(error => {
+        Alert.alert(error);
+      });
+  }
 
   static navigationOptions = {
     title: 'GetMask Us'
@@ -87,25 +155,13 @@ class GetMask extends Component {
 
     return (
       <ScrollView>
-        {/* <View style={styles.container}>
-         */}
-        {/* <Button
-            title='Camera'
-            onPress={this.getImageFromCamera}
-            style={styles.buttons}
-          />
-          <Button
-            icon={<Icon name='arrow-right' size={15} color='white' />}
-            title='Gallery'
-            onPress={this.getImageFromGallery}
-          /> */}
         <View style={styles.headContainer}>
           <Icon
             raised
             reverse
             type='font-awesome'
             name={'camera'}
-            color='#f194ff'
+            color='#36A0ED'
             onPress={this.getImageFromCamera}
           />
 
@@ -114,22 +170,24 @@ class GetMask extends Component {
             reverse
             type='font-awesome'
             name={'image'}
-            color='#f194ff'
+            color='#36A0ED'
             onPress={this.getImageFromGallery}
           />
         </View>
 
-        <View>
+        <View style={styles.headContainer}>
           <Image
             source={{ uri: imageUri }}
             loadingIndicatorSource={require('./images/logo.png')}
             style={styles.image}
           />
         </View>
-        <View>
+        <View style={{ marginTop: 35 }}>
           <Button
             title='View Mask'
-            onPress={() => navigate('ViewMask', { mask: imageUri })}
+            onPress={() => {
+              this.viewMask();
+            }}
             style={styles.buttons}
           />
         </View>
@@ -145,7 +203,9 @@ const styles = StyleSheet.create({
   },
   headContainer: {
     flexDirection: 'row',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    marginTop: 10,
+    padding: 20
   },
   imageContainer: {
     flex: 1,
@@ -155,9 +215,11 @@ const styles = StyleSheet.create({
   image: {
     margin: 10,
     width: 320,
-    height: 256
+    height: 256,
+    margin: 'auto'
   },
   buttons: {
+    paddingTop: 20,
     marginTop: 40,
     marginLeft: 10,
     marginRight: 10,
