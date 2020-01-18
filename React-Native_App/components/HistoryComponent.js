@@ -28,7 +28,8 @@ class History extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      histories: []
+      histories: [],
+      loaded: false
     };
   }
 
@@ -59,6 +60,7 @@ class History extends Component {
               })
                 .then(
                   response => {
+                    this.setState({ loaded: true });
                     if (response.ok) {
                       return response;
                     }
@@ -100,7 +102,8 @@ class History extends Component {
 
   render() {
     const { navigate } = this.props.navigation;
-    const { histories } = this.state;
+    const { histories, loaded } = this.state;
+    if (!loaded) return <Loading />;
     if (!histories.length) {
       return <Text> {'\t'}No history available. </Text>;
     }

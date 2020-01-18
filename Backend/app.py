@@ -56,16 +56,18 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 # init MYSQL
 mysql = MySQL(app)
-model = smp.Unet('resnet18', classes=1, activation=None, encoder_weights=None)
-weight = torch.load('skyres182.pth', map_location='cpu')
+model = smp.Unet('efficientnet-b3', classes=1,
+                 activation=None, encoder_weights=None)
+weight = torch.load('skyeffb3.pth', map_location='cpu')
 model.load_state_dict(weight["state_dict"])
 
 Registerschema = {'name': {'type': 'string', 'required': True},
                   'username': {'type': 'string', 'required': True},
                   'password': {'type': 'string', 'required': True},
-                  'focalLength': {'type': 'number', 'required': True},
-                  'height': {'type': 'number', 'required': True},
-                  'width': {'type': 'number', 'required': True}}
+                  #   'focalLength': {'type': 'number', 'required': True},
+                  #   'height': {'type': 'number', 'required': True},
+                  #   'width': {'type': 'number', 'required': True}
+                  'angleOfView': {'type': 'number', 'required': True}}
 
 
 def percent_sky_region(img):
@@ -112,7 +114,7 @@ def post_process(probability, threshold, min_size):
     return predictions, num
 
 
-def angle_arr(image):
+def angle_arr(image, angleOfView):
     arr = []
     for i in range(320):
         for j in range(256):
@@ -120,10 +122,10 @@ def angle_arr(image):
                 break
 
         if j < 256:
-            angle = (30.0/256.0)*(128-j)
+            angle = (angleOfView/256.0)*(128-j)
             arr.append(angle)
         else:
-            angle = (30.0/256.0)*(-128)
+            angle = (angleOfView/256.0)*(-128)
             arr.append(angle)
 
     return arr
@@ -143,16 +145,16 @@ def register():
         name = data['name']
         username = data['username']
         password = sha256_crypt.encrypt(str(data['password']))
-        focalLength = data['focalLength']
-        height = data['height']
-        width = data['width']
-
+        # focalLength = data['focalLength']
+        # height = data['height']
+        # width = data['width']
+        angleOfView = data['angleOfView']
         # Create cursor
         cur = mysql.connection.cursor()
 
         # Execute query
-        cur.execute("INSERT INTO USERS(name, username, password, focalLength, height, width) VALUES(%s, %s, %s, %s,%s,%s)",
-                    (name, username, password, focalLength, height, width))
+        cur.execute("INSERT INTO USERS(name, username, password, angleOfView) VALUES(%s, %s, %s, %s)",
+                    (name, username, password, angleOfView))
 
         # Commit to DB
         mysql.connection.commit()
@@ -245,12 +247,15 @@ def getMask():
             mage3, num = post_process(mage2, mage2.mean(), 50)
             # cv2.imwrite('public/'+mask_image_name, mage3)
             percent = percent_sky_region(mage3)
-            plt.imsave('public/'+mask_image_name, mage3, cmap='gray')
-            array_angle = angle_arr(mage3)
-
             cur = mysql.connection.cursor()
-
             username = request.form['username']
+            result = cur.execute(
+                "SELECT * FROM USERS WHERE username = %s  ", [username])
+            user = cur.fetchone()
+
+            plt.imsave('public/'+mask_image_name, mage3, cmap='gray')
+            print(user['angleOfView'])
+            array_angle = angle_arr(mage3, angleOfView=user['angleOfView'])
 
             anglesList = json.dumps(array_angle)
             # Execute query
@@ -275,7 +280,7 @@ def getHistories():
         username = request.form['username']
         # Execute query
         result = cur.execute(
-            "SELECT * FROM HISTORIES WHERE username = %s", [username])
+            "SELECT * FROM HISTORIES WHERE username = %s  ORDER BY created_at DESC", [username])
         histories = cur.fetchall()
 
     if result > 0:

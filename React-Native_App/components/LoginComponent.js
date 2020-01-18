@@ -25,9 +25,10 @@ class LoginTab extends Component {
       username: '',
       password: '',
       name: '',
-      focalLength: 0,
-      height: 0,
-      width: 0,
+      // focalLength: 0,
+      // height: 0,
+      // width: 0,
+      angleOfView: 0,
       remember: false
     };
   }
@@ -264,14 +265,15 @@ class RegisterTab extends Component {
     console.log(processedImage);
     this.setState({ imageUri: processedImage.uri });
   };
-  register(name, username, password, focalLength, height, width) {
+  register(name, username, password, angleOfView) {
     let reqBody = {
       name: name,
       username: username,
       password: password,
-      focalLength: Number(focalLength),
-      height: Number(height),
-      width: Number(width)
+      // focalLength: Number(focalLength),
+      // height: Number(height),
+      // width: Number(width)
+      angleOfView: Number(angleOfView)
     };
     console.log('request sent to', `${baseUrl}register`);
     return fetch(`${baseUrl}register`, {
@@ -336,7 +338,7 @@ class RegisterTab extends Component {
   handleRegister() {
     console.log(JSON.stringify(this.state));
 
-    const { name, username, password, focalLength, height, width } = this.state;
+    const { name, username, password, angleOfView } = this.state;
     if (this.state.remember)
       SecureStore.setItemAsync(
         'userinfo',
@@ -345,7 +347,7 @@ class RegisterTab extends Component {
           password: this.state.password
         })
       ).catch(error => console.log('Could not save user info', error));
-    this.register(name, username, password, focalLength, height, width);
+    this.register(name, username, password, angleOfView);
   }
 
   render() {
@@ -393,7 +395,7 @@ class RegisterTab extends Component {
             containerStyle={styles.formInput}
           />
           <Text style={styles.headline}>Camera Specifications</Text>
-          <Input
+          {/* <Input
             placeholder='Focal length (in mm)'
             // leftIcon={{ type: 'font-awesome', name: 'envelope-o' }}
             onChangeText={focalLength => this.setState({ focalLength })}
@@ -410,6 +412,12 @@ class RegisterTab extends Component {
             placeholder='Width (in mm)'
             onChangeText={width => this.setState({ width })}
             value={this.state.width}
+            containerStyle={styles.formInput}
+          /> */}
+          <Input
+            placeholder='Angle of View (in degrees)'
+            onChangeText={angleOfView => this.setState({ angleOfView })}
+            value={this.state.angleOfView}
             containerStyle={styles.formInput}
           />
           <CheckBox

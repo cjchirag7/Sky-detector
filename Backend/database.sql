@@ -9,9 +9,10 @@ CREATE TABLE USERS
     (100),
     username VARCHAR
     (30) PRIMARY KEY,
-    focalLength FLOAT,
-    height FLOAT,
-    width FLOAT,
+    -- focalLength FLOAT,
+    -- height FLOAT,
+    -- width FLOAT,
+    angleOfView FLOAT,
 	register_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
     CREATE TABLE HISTORIES
