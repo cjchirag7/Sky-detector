@@ -44,6 +44,7 @@ class History extends Component {
           SecureStore.getItemAsync('userinfo')
             .then(userdata => {
               let userinfo = JSON.parse(userdata);
+              console.log(userinfo);
               let username = userinfo.username;
               // Upwload the image using the fetch and FormData APIs
               let formData = new FormData();
@@ -115,7 +116,8 @@ class History extends Component {
               navigate('HistoryDetail', {
                 mask: item.mask,
                 angles: item.angles,
-                percent: item.percent
+                percent: item.percent,
+                image: item.image
               })
             }
           >

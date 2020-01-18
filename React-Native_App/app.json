@@ -1,10 +1,14 @@
 {
   "expo": {
     "name": "Sky Detector",
-    "slug": "React-Native_App",
+    "slug": "sky-detector",
     "privacy": "public",
     "sdkVersion": "33.0.0",
-    "platforms": ["ios", "android", "web"],
+    "platforms": [
+      "ios",
+      "android",
+      "web"
+    ],
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -16,13 +20,16 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "net.iitism.skydetector.sih"
     },
     "android": {
       "package": "net.iitism.skydetector.sih"
-    }
+    },
+    "description": "This is a sky segmentor  app"
   }
 }

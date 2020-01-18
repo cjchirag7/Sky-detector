@@ -20,18 +20,28 @@ class ViewMask extends Component {
     const mask = this.props.navigation.getParam('mask');
     const angles = this.props.navigation.getParam('angles');
     const percent = this.props.navigation.getParam('percent');
+    const image = this.props.navigation.getParam('image');
     this.state = {
       imageUri: imageUrl + mask,
       angles: JSON.parse(angles),
-      percent
+      percent,
+      originalImageUri: imageUrl + image
     };
   }
 
   render() {
-    const { imageUri, angles, percent } = this.state;
+    const { imageUri, angles, percent, originalImageUri } = this.state;
     const contentInset = { top: 20, bottom: 20 };
     return (
       <ScrollView>
+        <View style={styles.headContainer}>
+          <Image
+            source={{ uri: originalImageUri }}
+            loadingIndicatorSource={require('./images/logo.png')}
+            style={styles.image}
+          />
+        </View>
+
         <View style={styles.headContainer}>
           <Image
             source={{ uri: imageUri }}

@@ -116,6 +116,13 @@ class LoginTab extends Component {
             'userStatus',
             JSON.stringify({ loggedIn: true })
           ).catch(error => console.log('Could not save user info', error));
+          SecureStore.setItemAsync(
+            'userinfo',
+            JSON.stringify({
+              username: this.state.username,
+              password: this.state.password
+            })
+          ).catch(error => console.log('Could not save user info', error));
           Alert.alert('Login Successful');
         } else {
           Alert.alert('Username and Password donot match. \n Please try again');

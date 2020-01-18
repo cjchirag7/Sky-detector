@@ -127,11 +127,16 @@ class GetMask extends Component {
                 )
                 .then(response => response.json())
                 .then(response => {
-                  const { mask, angles, percent } = response;
+                  const { mask, angles, percent, image, error } = response;
+                  if (error) {
+                    Alert.alert('Image not uploaded properly.');
+                    return;
+                  }
                   return navigate('ViewMask', {
                     mask: mask,
                     angles: angles,
-                    percent: percent
+                    percent: percent,
+                    image: image
                   });
                 })
                 .catch(error => {

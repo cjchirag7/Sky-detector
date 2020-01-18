@@ -284,7 +284,7 @@ def getHistories():
         histories = cur.fetchall()
 
     if result > 0:
-
+        print(len(histories))
         return jsonify(histories=histories, success=True)
     else:
         return jsonify(msg="No histories yet. Explore the 'get mask' feature in Menu")

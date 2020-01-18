@@ -57,8 +57,8 @@ class Home extends Component {
               The app as its application the finding the solar energy potential
               in urban and rural setting. The app also provides the angle of
               elevation of lowest sky pixel in each column. The app will also
-              store the user’s history so that the person can evaluate the solar
-              potential of different regions of which he/she has taken the
+              store the user’s history so that the person can evaluate the
+              solar potential of different regions of which he/she has taken the
               photo.
             </Text>
           </Card.Content>
