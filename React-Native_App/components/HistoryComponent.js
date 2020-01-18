@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
-import { FlatList, Text } from 'react-native';
+import { Avatar, Button, Card, Title, Paragraph } from 'react-native-paper';
+import { FlatList, Text, ScrollView, StyleSheet } from 'react-native';
 import { Tile } from 'react-native-elements';
 import { connect } from 'react-redux';
 import { imageUrl } from '../shared/baseUrl';
 import { Loading } from './LoadingComponent';
-import { DISHES } from '../shared/dishes';
+import { HISTORIES } from '../shared/histories';
 import * as Animatable from 'react-native-animatable';
+import DrawerNavigatorItems from 'react-navigation/src/views/Drawer/DrawerNavigatorItems';
 
 // const mapStateToProps = state => {
 //   return {
@@ -30,32 +32,40 @@ class History extends Component {
     const renderHistoryItem = ({ item, index }) => {
       return (
         <Animatable.View animation='fadeInRightBig' duration={2000}>
-          <Tile
-            key={index}
-            title={item.name}
-            caption={item.description}
-            featured
-            imageSrc={{ uri: imageUrl + item.image }}
-            onPress={() => navigate('HistoryDetail', { dishId: item.id })}
-          />
+          <Card style={styles.container}>
+            <Card.Title
+              title={item.created_at}
+              left={props => <Avatar.Icon {...props} icon='image' />}
+            />
+            <Card.Content></Card.Content>
+            <Card.Cover source={{ uri: 'https://picsum.photos/700' }} />
+          </Card>
         </Animatable.View>
       );
     };
 
-    // if (this.props.dishes.isLoading) {
+    // if (this.props.histories.isLoading) {
     //   return <Loading />;
-    // } else if (this.props.dishes.errMess) {
-    //   return <Text>{this.props.dishes.errMess}</Text>;
+    // } else if (this.props.histories.errMess) {
+    //   return <Text>{this.props.histories.errMess}</Text>;
     // } else
     return (
-      <FlatList
-        data={DISHES.dishes}
-        renderItem={renderHistoryItem}
-        keyExtractor={item => item.id.toString()}
-      />
+      <ScrollView>
+        <FlatList
+          data={HISTORIES}
+          renderItem={renderHistoryItem}
+          keyExtractor={item => item.id.toString()}
+        />
+      </ScrollView>
     );
   }
 }
+const styles = StyleSheet.create({
+  container: {
+    justifyContent: 'center',
+    margin: 'auto'
+  }
+});
 
 // export default connect(mapStateToProps)(History);
 export default History;

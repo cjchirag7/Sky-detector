@@ -35,6 +35,8 @@ class ViewMask extends Component {
             style={styles.image}
           />
         </View>
+        <Text style={styles.headline}>Plot</Text>
+
         <View style={{ height: 200, flexDirection: 'row' }}>
           <YAxis
             data={data}
@@ -77,6 +79,12 @@ const styles = StyleSheet.create({
   },
   buttons: {
     marginTop: 40
+  },
+  headline: {
+    textAlign: 'center', // <-- the magic
+    fontWeight: 'bold',
+    fontSize: 18,
+    margin: 'auto'
   }
 });
 

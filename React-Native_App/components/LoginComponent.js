@@ -132,14 +132,14 @@ class LoginTab extends Component {
         <View style={styles.container}>
           <Input
             placeholder='Username'
-            leftIcon={{ type: 'font-awesome', name: 'user-o' }}
+            //leftIcon={{ type: 'font-awesome', name: 'user-o' }}
             onChangeText={username => this.setState({ username })}
             value={this.state.username}
             containerStyle={styles.formInput}
           />
           <Input
             placeholder='Password'
-            leftIcon={{ type: 'font-awesome', name: 'key' }}
+            //leftIcon={{ type: 'font-awesome', name: 'key' }}
             onChangeText={password => this.setState({ password })}
             value={this.state.password}
             containerStyle={styles.formInput}
@@ -475,6 +475,12 @@ const styles = StyleSheet.create({
   },
   formButton: {
     margin: 60
+  },
+  headline: {
+    textAlign: 'center', // <-- the magic
+    fontWeight: 'bold',
+    fontSize: 18,
+    margin: 'auto'
   }
 });
 

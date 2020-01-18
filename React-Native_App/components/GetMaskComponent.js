@@ -87,18 +87,38 @@ class GetMask extends Component {
 
     return (
       <ScrollView>
-        <View style={styles.container}>
-          <Button
+        {/* <View style={styles.container}>
+         */}
+        {/* <Button
             title='Camera'
             onPress={this.getImageFromCamera}
             style={styles.buttons}
           />
           <Button
+            icon={<Icon name='arrow-right' size={15} color='white' />}
             title='Gallery'
             onPress={this.getImageFromGallery}
-            style={styles.buttons}
+          /> */}
+        <View style={styles.headContainer}>
+          <Icon
+            raised
+            reverse
+            type='font-awesome'
+            name={'camera'}
+            color='#f194ff'
+            onPress={this.getImageFromCamera}
+          />
+
+          <Icon
+            raised
+            reverse
+            type='font-awesome'
+            name={'image'}
+            color='#f194ff'
+            onPress={this.getImageFromGallery}
           />
         </View>
+
         <View>
           <Image
             source={{ uri: imageUri }}
@@ -123,6 +143,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     margin: 20
   },
+  headContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center'
+  },
   imageContainer: {
     flex: 1,
     flexDirection: 'row',
@@ -134,7 +158,11 @@ const styles = StyleSheet.create({
     height: 256
   },
   buttons: {
-    marginTop: 40
+    marginTop: 40,
+    marginLeft: 10,
+    marginRight: 10,
+    width: 'auto',
+    color: 'blue'
   }
 });
 
