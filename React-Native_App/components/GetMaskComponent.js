@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+
 import {
   StyleSheet,
   ScrollView,
@@ -94,9 +95,9 @@ class GetMask extends Component {
             style={styles.buttons}
           />
           <Button
+            icon={<Icon name='arrow-right' size={15} color='white' />}
             title='Gallery'
             onPress={this.getImageFromGallery}
-            style={styles.buttons}
           />
         </View>
         <View>
