@@ -41,19 +41,27 @@ class Home extends Component {
           />
           <Card.Content>
             <Text>
-              Generating local sky horizon has important applications for
-              analysis of solar energy potential in an urban setting. Develop a
-              mobile application for automatically detecting sky pixels in a
-              photograph. The application should generate a mask image
-              consisting of sky pixels marked in white colour in the image and
-              other pixels marked in black colour. Further, using information
-              about camera optics, the application should give angle of
-              elevation of the lowest sky pixel for all pixel columns in the
-              mask image.
+              Sky finder is an app that will detect the sky and ground region in
+              the image provided by the user by segmenting the sky and the
+              ground region. The app will detect the sky region with the help of
+              a Deep CNN based architecture build of the segmentation of the sky
+              pixel in the image.
+              {'\n'}
             </Text>
           </Card.Content>
 
           <Card.Cover source={{ uri: 'https://picsum.photos/700' }} />
+          <Card.Content>
+            <Text>
+              {'\n'}
+              The app as its application the finding the solar energy potential
+              in urban and rural setting. The app also provides the angle of
+              elevation of lowest sky pixel in each column. The app will also
+              store the user’s history so that the person can evaluate the solar
+              potential of different regions of which he/she has taken the
+              photo.
+            </Text>
+          </Card.Content>
         </Card>
         {/* </Animatable.View> */}
       </ScrollView>

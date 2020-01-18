@@ -12,7 +12,6 @@ import { Card, Button, Icon } from 'react-native-elements';
 import * as Permissions from 'expo-permissions';
 import * as ImagePicker from 'expo-image-picker';
 import * as ImageManipulator from 'expo-image-manipulator';
-import { Item } from 'react-native-paper/lib/typescript/src/components/List/List';
 
 class HistoryDetailComponent extends Component {
   constructor(props) {

@@ -7,7 +7,6 @@ import { imageUrl } from '../shared/baseUrl';
 import { Loading } from './LoadingComponent';
 import { HISTORIES } from '../shared/histories';
 import * as Animatable from 'react-native-animatable';
-import DrawerNavigatorItems from 'react-navigation/src/views/Drawer/DrawerNavigatorItems';
 
 // const mapStateToProps = state => {
 //   return {
@@ -32,21 +31,22 @@ class History extends Component {
     const renderHistoryItem = ({ item, index }) => {
       return (
         <Animatable.View animation='fadeInRightBig' duration={2000}>
-          <Card style={styles.container}>
-            <Card.Title
-              title={item.created_at}
-              left={props => <Avatar.Icon {...props} icon='image' />}
-            />
-            <Card.Content></Card.Content>
-            <Card.Cover source={{ uri: 'https://picsum.photos/700' }} />
-            onPress=
-            {() =>
+          <Card
+            style={styles.container}
+            onPress={() =>
               navigate(
                 'HistoryDetailComponent',
                 { mask: imageUri },
                 { angles: item.angles }
               )
             }
+          >
+            <Card.Title
+              title={item.created_at}
+              left={props => <Avatar.Icon {...props} icon='image' />}
+            />
+            <Card.Content></Card.Content>
+            <Card.Cover source={{ uri: 'https://picsum.photos/700' }} />}
           </Card>
         </Animatable.View>
       );
