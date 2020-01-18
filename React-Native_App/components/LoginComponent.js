@@ -77,15 +77,18 @@ class LoginTab extends Component {
   }
 
   login(username, password) {
+    let reqBody = {
+      username: username,
+      password: password
+    };
+    console.log('request body', reqBody);
+    console.log('request sent to', `${baseUrl}login`);
     return fetch(`${baseUrl}login`, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/x-www-form-urlencoded'
+        'Content-Type': 'application/json'
       },
-      form: {
-        username: username,
-        password: password
-      },
+      body: JSON.stringify(reqBody),
       credentials: 'same-origin'
     })
       .then(
@@ -262,19 +265,21 @@ class RegisterTab extends Component {
     this.setState({ imageUri: processedImage.uri });
   };
   register(name, username, password, focalLength, height, width) {
+    let reqBody = {
+      name: name,
+      username: username,
+      password: password,
+      focalLength: Number(focalLength),
+      height: Number(height),
+      width: Number(width)
+    };
+    console.log('request sent to', `${baseUrl}register`);
     return fetch(`${baseUrl}register`, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/x-www-form-urlencoded'
+        'Content-Type': 'application/json'
       },
-      form: {
-        name: name,
-        username: username,
-        password: password,
-        focalLength: focalLength,
-        height: height,
-        width: width
-      },
+      body: JSON.stringify(reqBody),
       credentials: 'same-origin'
     })
       .then(
@@ -296,10 +301,19 @@ class RegisterTab extends Component {
       )
       .then(response => response.json())
       .then(response => {
+        console.log(response);
         if (response.msg) {
           Alert.alert(response.msg);
         } else {
-          Alert.alert('Registration Failed \n' + response.error);
+          let obj = response.error;
+          console.log(obj);
+          errorList = [];
+          for (let key in obj) {
+            if (obj.hasOwnProperty(key)) {
+              errorList.push(`${key} : ${obj[key]}`);
+            }
+          }
+          Alert.alert('Registration Failed \n' + errorList);
         }
       })
       .catch(error => {

@@ -1,11 +1,15 @@
 from flask import Flask, jsonify, session, render_template, logging, request
 # from data import Articles
 from flask_mysqldb import MySQL
+from flask_cors import CORS
 from wtforms import Form, StringField, FloatField, PasswordField, validators
 from passlib.hash import sha256_crypt
 from functools import wraps
+from cerberus import Validator
+import json
 
 app = Flask(__name__)
+CORS(app)
 app.secret_key = 'secret123'
 
 # Config MySQL
@@ -18,7 +22,12 @@ app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 # init MYSQL
 mysql = MySQL(app)
 
-# Articles = Articles()
+Registerschema = {'name': {'type': 'string', 'required': True},
+                  'username': {'type': 'string', 'required': True},
+                  'password': {'type': 'string', 'required': True},
+                  'focalLength': {'type': 'number', 'required': True},
+                  'height': {'type': 'number', 'required': True},
+                  'width': {'type': 'number', 'required': True}}
 
 
 def is_logged_in(f):
@@ -38,14 +47,16 @@ def index():
 
 @app.route('/register', methods=['POST'])
 def register():
-    form = RegisterForm(request.form)
-    if request.method == 'POST' and form.validate():
-        name = form.name.data
-        username = form.username.data
-        password = sha256_crypt.encrypt(str(form.password.data))
-        focalLength = form.focalLength.data
-        height = form.height.data
-        width = form.width.data
+    RegisterValidator = Validator(Registerschema)
+    data = json.loads(request.stream.read().decode())
+    print(data)
+    if request.method == 'POST' and RegisterValidator.validate(data):
+        name = data['name']
+        username = data['username']
+        password = sha256_crypt.encrypt(str(data['password']))
+        focalLength = data['focalLength']
+        height = data['height']
+        width = data['width']
 
         # Create cursor
         cur = mysql.connection.cursor()
@@ -62,7 +73,7 @@ def register():
 
         return jsonify(msg="Successfully Registered. You can now log in to continue.")
 
-    return jsonify(error="Please try again")
+    return jsonify(error=RegisterValidator.errors)
 
 # User login
 
@@ -71,9 +82,9 @@ def register():
 def login():
     if request.method == 'POST':
         # Get Form Fields
-        username = request.form['username']
-        password_candidate = request.form['password']
-
+        print(request)
+        username = request.json['username']
+        password_candidate = request.json['password']
         # Create cursor
         cur = mysql.connection.cursor()
 
@@ -113,17 +124,6 @@ def login():
 def logout():
     session.clear()
     return jsonify(success=True)
-
-
-class RegisterForm(Form):
-    name = StringField('name', [validators.Length(min=1, max=50)])
-    username = StringField('username', [validators.Length(min=4, max=25)])
-    password = PasswordField('password', [
-        validators.DataRequired()
-    ])
-    focalLength = FloatField('focalLength', [validators.InputRequired()])
-    height = FloatField('height', [validators.InputRequired()])
-    width = FloatField('width', [validators.InputRequired()])
 
 
 if __name__ == 'main':
