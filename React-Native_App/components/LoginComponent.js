@@ -372,14 +372,14 @@ class RegisterTab extends Component {
           </View> */}
           <Input
             placeholder='Username'
-            leftIcon={{ type: 'font-awesome', name: 'user-o' }}
+            // leftIcon={{ type: 'font-awesome', name: 'user-o' }}
             onChangeText={username => this.setState({ username })}
             value={this.state.username}
             containerStyle={styles.formInput}
           />
           <Input
             placeholder='Password'
-            leftIcon={{ type: 'font-awesome', name: 'key' }}
+            // leftIcon={{ type: 'font-awesome', name: 'key' }}
             onChangeText={password => this.setState({ password })}
             value={this.state.password}
             containerStyle={styles.formInput}
@@ -387,15 +387,15 @@ class RegisterTab extends Component {
           />
           <Input
             placeholder='Name'
-            leftIcon={{ type: 'font-awesome', name: 'user-o' }}
+            // leftIcon={{ type: 'font-awesome', name: 'user-o' }}
             onChangeText={name => this.setState({ name })}
             value={this.state.name}
             containerStyle={styles.formInput}
           />
-          <Text>Camera Specifications</Text>
+          <Text style={styles.headline}>Camera Specifications</Text>
           <Input
             placeholder='Focal length (in mm)'
-            leftIcon={{ type: 'font-awesome', name: 'envelope-o' }}
+            // leftIcon={{ type: 'font-awesome', name: 'envelope-o' }}
             onChangeText={focalLength => this.setState({ focalLength })}
             value={this.state.focalLength}
             containerStyle={styles.formInput}
@@ -466,6 +466,12 @@ const styles = StyleSheet.create({
   formCheckbox: {
     margin: 20,
     backgroundColor: null
+  },
+  headline: {
+    textAlign: 'center',
+    fontWeight: 'bold',
+    fontSize: 18,
+    margin: 'auto'
   },
   formButton: {
     margin: 60

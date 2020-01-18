@@ -7,6 +7,7 @@ import {
   View,
   Text
 } from 'react-native';
+import { LineChart, Grid, YAxis } from 'react-native-svg-charts';
 import { Card, Button, Icon } from 'react-native-elements';
 import * as Permissions from 'expo-permissions';
 import * as ImagePicker from 'expo-image-picker';
@@ -23,7 +24,8 @@ class ViewMask extends Component {
 
   render() {
     const { imageUri } = this.state;
-
+    let data = [50, 10, 40, 95, -4, -24, 85, 91, 35, 53, -53, 24, 50, -20, -80];
+    const contentInset = { top: 20, bottom: 20 };
     return (
       <ScrollView>
         <View>
@@ -32,6 +34,26 @@ class ViewMask extends Component {
             loadingIndicatorSource={require('./images/logo.png')}
             style={styles.image}
           />
+        </View>
+        <View style={{ height: 200, flexDirection: 'row' }}>
+          <YAxis
+            data={data}
+            contentInset={contentInset}
+            svg={{
+              fill: 'grey',
+              fontSize: 10
+            }}
+            numberOfTicks={12}
+            formatLabel={value => `${value}º`}
+          />
+          <LineChart
+            style={{ flex: 1, marginLeft: 8 }}
+            data={data}
+            svg={{ stroke: 'rgb(134, 65, 244)' }}
+            contentInset={contentInset}
+          >
+            <Grid />
+          </LineChart>
         </View>
       </ScrollView>
     );
