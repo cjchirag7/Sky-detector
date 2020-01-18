@@ -8,7 +8,6 @@ import { imageUrl, baseUrl } from '../shared/baseUrl';
 import { Loading } from './LoadingComponent';
 // import { HISTORIES } from '../shared/histories';
 import * as Animatable from 'react-native-animatable';
-import DrawerNavigatorItems from 'react-navigation/src/views/Drawer/DrawerNavigatorItems';
 
 // const mapStateToProps = state => {
 //   return {
