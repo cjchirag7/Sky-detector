@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { Avatar, Button, Card, Title, Paragraph } from 'react-native-paper';
-import { FlatList, Text, ScrollView, StyleSheet } from 'react-native';
+// import { Avatar, Button, Card, Title, Paragraph } from 'react-native-paper';
+import { FlatList, Text, ScrollView, StyleSheet, View } from 'react-native';
 import * as SecureStore from 'expo-secure-store';
 import { Tile } from 'react-native-elements';
 import { connect } from 'react-redux';
@@ -8,6 +8,13 @@ import { imageUrl, baseUrl } from '../shared/baseUrl';
 import { Loading } from './LoadingComponent';
 // import { HISTORIES } from '../shared/histories';
 import * as Animatable from 'react-native-animatable';
+import {
+  Card,
+  CardContent,
+  CardAction,
+  CardButton,
+  CardImage
+} from 'react-native-material-cards';
 
 // const mapStateToProps = state => {
 //   return {
@@ -110,7 +117,35 @@ class History extends Component {
     const renderHistoryItem = ({ item, index }) => {
       return (
         <Animatable.View animation='fadeInRightBig' duration={2000}>
-          <Card
+          <Card>
+            <CardImage source={{ uri: imageUrl + item.image }} />
+            <CardContent>
+              <Text style={styles.title}>
+                {item.created_at.split('GMT')[0]}
+              </Text>
+              <Text style={styles.headline}>{item.addr1}</Text>
+              <Text style={styles.headline}>{item.addr2}</Text>
+            </CardContent>
+            <CardAction
+              separator={true}
+              inColumn={false}
+              style={{ justifyContent: 'center', margin: 'auto' }}
+            >
+              <CardButton
+                onPress={() =>
+                  navigate('HistoryDetail', {
+                    mask: item.mask,
+                    angles: item.angles,
+                    percent: item.percent,
+                    image: item.image
+                  })
+                }
+                title='View mask'
+                color='blue'
+              />
+            </CardAction>
+          </Card>
+          {/* <Card
             style={styles.container}
             onPress={() =>
               navigate('HistoryDetail', {
@@ -126,8 +161,8 @@ class History extends Component {
               left={props => <Avatar.Icon {...props} icon='image' />}
             />
             {/* <Card.Content></Card.Content> */}
-            <Card.Cover source={{ uri: imageUrl + item.image }} />
-          </Card>
+          {/* <Card.Cover source={{ uri: imageUrl + item.image }} />
+          </Card>  */}
         </Animatable.View>
       );
     };
@@ -152,6 +187,17 @@ const styles = StyleSheet.create({
   container: {
     justifyContent: 'center',
     margin: 'auto'
+  },
+  headline: {
+    textAlign: 'center',
+    fontSize: 18,
+    margin: 'auto'
+  },
+  title: {
+    textAlign: 'center',
+    fontSize: 18,
+    margin: 'auto',
+    fontWeight: 'bold'
   }
 });
 

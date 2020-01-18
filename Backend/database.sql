@@ -26,6 +26,10 @@ CREATE TABLE USERS
     mask VARCHAR
         (100),
     angles LONGTEXT,
+    addr1 VARCHAR
+        (100),
+    addr2 VARCHAR
+        (100),
     percent FLOAT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY

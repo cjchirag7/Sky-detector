@@ -490,12 +490,6 @@ const styles = StyleSheet.create({
   },
   formButton: {
     margin: 60
-  },
-  headline: {
-    textAlign: 'center', // <-- the magic
-    fontWeight: 'bold',
-    fontSize: 18,
-    margin: 'auto'
   }
 });
 

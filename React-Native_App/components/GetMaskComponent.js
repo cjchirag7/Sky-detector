@@ -16,11 +16,12 @@ import { baseUrl, imageUrl } from '../shared/baseUrl';
 import * as SecureStore from 'expo-secure-store';
 import * as Location from 'expo-location';
 
+const sample = 'https://via.placeholder.com/320';
 class GetMask extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      imageUri: 'https://via.placeholder.com/320',
+      imageUri: sample,
       geocode: null
     };
   }
@@ -94,9 +95,11 @@ class GetMask extends Component {
 
   viewMask() {
     const { navigate } = this.props.navigation;
-    const { imageUri } = this.state;
+    const { imageUri, geocode } = this.state;
+    const { street, name, city, postalCode, region } = geocode[0];
     let filename = imageUri.split('/').pop();
-
+    let addr1 = `${name}, ${street}`;
+    let addr2 = `${city}, ${region} - ${postalCode}`;
     // Infer the type of the image
     let match = /\.(\w+)$/.exec(filename);
     let type = match ? `image/${match[1]}` : `image`;
@@ -107,16 +110,28 @@ class GetMask extends Component {
           err = new Error('Please log in to avail this facility');
           throw err;
         }
+        if (imageUri === sample) {
+          err = new Error('Please upload an image first.');
+          throw err;
+        }
         if (userStatus.loggedIn) {
           SecureStore.getItemAsync('userinfo')
             .then(userdata => {
               let userinfo = JSON.parse(userdata);
               let username = userinfo.username;
+              if (geocode == null) {
+                err = new Error(
+                  'You have not provided access to your location.'
+                );
+                throw err;
+              }
               // Upload the image using the fetch and FormData APIs
               let formData = new FormData();
               // Assume "photo" is the name of the form field the server expects
               formData.append('image', { uri: imageUri, name: filename, type });
               formData.append('username', username);
+              formData.append('addr1', addr1);
+              formData.append('addr2', addr2);
               return fetch(`${baseUrl}get_mask`, {
                 method: 'POST',
                 body: formData,

@@ -249,6 +249,8 @@ def getMask():
             percent = percent_sky_region(mage3)
             cur = mysql.connection.cursor()
             username = request.form['username']
+            addr1 = request.form['addr1']
+            addr2 = request.form['addr2']
             result = cur.execute(
                 "SELECT * FROM USERS WHERE username = %s  ", [username])
             user = cur.fetchone()
@@ -259,8 +261,8 @@ def getMask():
 
             anglesList = json.dumps(array_angle)
             # Execute query
-            cur.execute("INSERT INTO HISTORIES(username,image,mask,angles,percent) VALUES( % s, % s, % s, % s, %s)",
-                        (username, filename, mask_image_name, anglesList, percent))
+            cur.execute("INSERT INTO HISTORIES(username,image,mask,angles,percent, addr1, addr2) VALUES( %s, %s, % s, % s, % s, % s, %s)",
+                        (username, filename, mask_image_name, anglesList, percent, addr1, addr2))
 
             # Commit to DB
             mysql.connection.commit()
