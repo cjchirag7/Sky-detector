@@ -28,7 +28,7 @@ class ViewMask extends Component {
     const contentInset = { top: 20, bottom: 20 };
     return (
       <ScrollView>
-        <View>
+        <View style={styles.headContainer}>
           <Image
             source={{ uri: imageUri }}
             loadingIndicatorSource={require('./images/logo.png')}
@@ -71,6 +71,12 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-around'
+  },
+  headContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginTop: 10,
+    padding: 20
   },
   image: {
     margin: 10,

@@ -5,6 +5,6 @@
 // export const baseUrl =
 //   'https://my-json-server.typicode.com/cjchirag7/react-native/';
 
-export const baseUrl = 'http://8489d66d.ngrok.io/';
+export const baseUrl = 'http://244d708e.ngrok.io/';
 
-export const imageUrl = 'https://confusion-native.s3.ap-south-1.amazonaws.com/';
+export const imageUrl = baseUrl + 'public/';

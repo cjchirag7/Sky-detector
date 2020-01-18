@@ -12,13 +12,11 @@ import * as Permissions from 'expo-permissions';
 import * as ImagePicker from 'expo-image-picker';
 import * as ImageManipulator from 'expo-image-manipulator';
 
-const sampleImage =
-  'https://www.google.com/imgres?imgurl=https%3A%2F%2Fimages.pexels.com%2Fphotos%2F912110%2Fpexels-photo-912110.jpeg%3Fauto%3Dcompress%26cs%3Dtinysrgb%26dpr%3D1%26w%3D500&imgrefurl=https%3A%2F%2Fwww.pexels.com%2Fsearch%2Fsky%2F&docid=pZ56kUO_51Z65M&tbnid=bpNcK9O3qS9JIM%3A&vet=10ahUKEwj9xo_Bj4vnAhW64nMBHVEaCC8QMwhjKAAwAA..i&w=500&h=333&bih=669&biw=1366&q=sky%20jpg%20image&ved=0ahUKEwj9xo_Bj4vnAhW64nMBHVEaCC8QMwhjKAAwAA&iact=mrc&uact=8';
 class GetMask extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      imageUri: sampleImage
+      imageUri: 'https://via.placeholder.com/320'
     };
   }
   componentDidMount() {
@@ -105,7 +103,7 @@ class GetMask extends Component {
             reverse
             type='font-awesome'
             name={'camera'}
-            color='#f194ff'
+            color='#36A0ED'
             onPress={this.getImageFromCamera}
           />
 
@@ -114,19 +112,19 @@ class GetMask extends Component {
             reverse
             type='font-awesome'
             name={'image'}
-            color='#f194ff'
+            color='#36A0ED'
             onPress={this.getImageFromGallery}
           />
         </View>
 
-        <View>
+        <View style={styles.headContainer}>
           <Image
             source={{ uri: imageUri }}
             loadingIndicatorSource={require('./images/logo.png')}
             style={styles.image}
           />
         </View>
-        <View>
+        <View style={{ marginTop: 35 }}>
           <Button
             title='View Mask'
             onPress={() => navigate('ViewMask', { mask: imageUri })}
@@ -145,7 +143,9 @@ const styles = StyleSheet.create({
   },
   headContainer: {
     flexDirection: 'row',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    marginTop: 10,
+    padding: 20
   },
   imageContainer: {
     flex: 1,
@@ -153,12 +153,12 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around'
   },
   image: {
-    margin: 10,
+    margin: 'auto',
     width: 320,
     height: 256
   },
   buttons: {
-    marginTop: 40,
+    paddingTop: 20,
     marginLeft: 10,
     marginRight: 10,
     width: 'auto',
