@@ -14,12 +14,14 @@ import * as ImagePicker from 'expo-image-picker';
 import * as ImageManipulator from 'expo-image-manipulator';
 import { baseUrl, imageUrl } from '../shared/baseUrl';
 import * as SecureStore from 'expo-secure-store';
+import * as Location from 'expo-location';
 
 class GetMask extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      imageUri: 'https://via.placeholder.com/320'
+      imageUri: 'https://via.placeholder.com/320',
+      geocode: null
     };
   }
   componentDidMount() {
@@ -32,6 +34,17 @@ class GetMask extends Component {
       if (status !== 'granted') {
         alert('Sorry, we need camera roll permissions to make this work!');
       }
+    }
+    let { status } = await Permissions.askAsync(Permissions.LOCATION);
+    if (status !== 'granted') {
+      this.setState({
+        errorMessage: 'Permission to access location was denied'
+      });
+    } else {
+      let location = await Location.getCurrentPositionAsync({});
+      let geocode = await Location.reverseGeocodeAsync(location.coords);
+      this.setState({ geocode });
+      console.log(geocode);
     }
   };
 
@@ -90,6 +103,10 @@ class GetMask extends Component {
     SecureStore.getItemAsync('userStatus')
       .then(userstat => {
         let userStatus = JSON.parse(userstat);
+        if (userStatus == null) {
+          err = new Error('Please log in to avail this facility');
+          throw err;
+        }
         if (userStatus.loggedIn) {
           SecureStore.getItemAsync('userinfo')
             .then(userdata => {
@@ -145,7 +162,7 @@ class GetMask extends Component {
                 });
             })
             .catch(error => {
-              console.log(error);
+              console.log(error.message);
             });
         } else {
           Alert.alert('Please log in to avail this facility.');
@@ -153,7 +170,7 @@ class GetMask extends Component {
         }
       })
       .catch(error => {
-        Alert.alert(error);
+        Alert.alert(error.message);
       });
   }
 
