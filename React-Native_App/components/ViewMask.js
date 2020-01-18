@@ -74,6 +74,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-around'
   },
+  headContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginTop: 10,
+    padding: 20
+  },
   image: {
     margin: 10,
     width: 320,

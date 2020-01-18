@@ -39,6 +39,14 @@ class History extends Component {
             />
             <Card.Content></Card.Content>
             <Card.Cover source={{ uri: 'https://picsum.photos/700' }} />
+            onPress=
+            {() =>
+              navigate(
+                'HistoryDetailComponent',
+                { mask: imageUri },
+                { angles: item.angles }
+              )
+            }
           </Card>
         </Animatable.View>
       );

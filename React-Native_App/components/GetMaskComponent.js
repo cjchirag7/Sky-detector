@@ -18,7 +18,9 @@ import * as SecureStore from 'expo-secure-store';
 class GetMask extends Component {
   constructor(props) {
     super(props);
-    this.state = { imageUri: 'https://via.placeholder.com/320' };
+    this.state = {
+      imageUri: 'https://via.placeholder.com/320'
+    };
   }
   componentDidMount() {
     this.getPermissionAsync();
@@ -213,14 +215,13 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around'
   },
   image: {
-    margin: 10,
+    margin: 'auto',
     width: 320,
     height: 256,
     margin: 'auto'
   },
   buttons: {
     paddingTop: 20,
-    marginTop: 40,
     marginLeft: 10,
     marginRight: 10,
     width: 'auto',
