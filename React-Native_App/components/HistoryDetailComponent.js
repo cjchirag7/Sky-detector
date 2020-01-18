@@ -12,21 +12,23 @@ import { Card, Button, Icon } from 'react-native-elements';
 import * as Permissions from 'expo-permissions';
 import * as ImagePicker from 'expo-image-picker';
 import * as ImageManipulator from 'expo-image-manipulator';
-import { Item } from 'react-native-paper/lib/typescript/src/components/List/List';
+import { imageUrl } from '../shared/baseUrl';
 
-class HistoryDetailComponent extends Component {
+class HistoryDetail extends Component {
   constructor(props) {
     super(props);
     const mask = this.props.navigation.getParam('mask');
     const angles = this.props.navigation.getParam('angles');
+    const percent = this.props.navigation.getParam('percent');
     this.state = {
-      mask: mask,
-      angles: angles
+      imageUri: imageUrl + mask,
+      angles: JSON.parse(angles),
+      percent
     };
   }
 
   render() {
-    const { maask, angles } = this.state;
+    const { imageUri, angles, percent } = this.state;
     const contentInset = { top: 20, bottom: 20 };
     return (
       <ScrollView>
@@ -37,22 +39,27 @@ class HistoryDetailComponent extends Component {
             style={styles.image}
           />
         </View>
-        <Text style={styles.headline}>Plot</Text>
+        <Text style={styles.headline}>
+          {' '}
+          Sky Region : {percent} % {'\n'}
+        </Text>
+
+        <Text style={styles.headline}>Plot of Angles of Elevation</Text>
 
         <View style={{ height: 200, flexDirection: 'row' }}>
           <YAxis
-            angles={angles}
+            data={angles}
             contentInset={contentInset}
             svg={{
               fill: 'grey',
               fontSize: 10
             }}
             numberOfTicks={12}
-            formatLabel={value => `${value}ยบ`}
+            formatLabel={value => `${value}\u00B0`}
           />
           <LineChart
             style={{ flex: 1, marginLeft: 8 }}
-            angles={angles}
+            data={angles}
             svg={{ stroke: 'rgb(134, 65, 244)' }}
             contentInset={contentInset}
           >
@@ -96,4 +103,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default HistoryDetailComponent;
+export default HistoryDetail;

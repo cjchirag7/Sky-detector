@@ -68,6 +68,12 @@ Registerschema = {'name': {'type': 'string', 'required': True},
                   'width': {'type': 'number', 'required': True}}
 
 
+def percent_sky_region(img):
+    sky_pixel = np.count_nonzero(img)
+    x, y = img.shape
+    return(float(sky_pixel)/float(x*y))*100
+
+
 def is_logged_in(f):
     @wraps(f)
     def wrap(*args, **kwargs):
@@ -237,8 +243,8 @@ def getMask():
             mage2 = torch.sigmoid(mage)
             mage2 = mage2.reshape(256, 320).numpy()
             mage3, num = post_process(mage2, mage2.mean(), 50)
-            print(mage3.sum())
             # cv2.imwrite('public/'+mask_image_name, mage3)
+            percent = percent_sky_region(mage3)
             plt.imsave('public/'+mask_image_name, mage3, cmap='gray')
             array_angle = angle_arr(mage3)
 
@@ -248,23 +254,23 @@ def getMask():
 
             anglesList = json.dumps(array_angle)
             # Execute query
-            cur.execute("INSERT INTO HISTORIES(username,image,mask,angles) VALUES( % s, % s, % s, % s)",
-                        (username, filename, mask_image_name, anglesList))
+            cur.execute("INSERT INTO HISTORIES(username,image,mask,angles,percent) VALUES( % s, % s, % s, % s, %s)",
+                        (username, filename, mask_image_name, anglesList, percent))
 
             # Commit to DB
             mysql.connection.commit()
 
             # Close connection
             cur.close()
-            return jsonify(image=filename, mask=mask_image_name, angles=anglesList)
+            return jsonify(image=filename, mask=mask_image_name, angles=anglesList, percent=percent)
         # return jsonify(msg="Successfully Uploaded image")
 
     return jsonify(error="Some error occured", success=False)
 
 
-@app.route('/histories', methods=['GET'])
+@app.route('/get_histories', methods=['POST'])
 def getHistories():
-    if request.method == 'GET':
+    if request.method == 'POST':
         cur = mysql.connection.cursor()
         username = request.form['username']
         # Execute query

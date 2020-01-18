@@ -18,19 +18,19 @@ class Contact extends Component {
     return (
       <View>
         <Animatable.View animation='fadeInDown' duration={2000} delay={1000}>
-          <Card title='Contact Us'>
+          <Card title='Developers'>
             <Text>
-              {`\n
+              {`
         This app was developed by : \n
         1.Chirag Jain\n
         2. Saharsh Singh\n
         3. Ayush Singh\n
         4. Prince Arya\n
         5. Sachin Shukla\n
-        6. Kavya `}
+        6. Kavya Kandhway\n`}
             </Text>
             <Button
-              title='Give feedback'
+              title=' Give feedback'
               buttonStyle={{ backgroundColor: '#512DA8' }}
               icon={
                 <Icon name='envelope-o' type='font-awesome' color='white' />

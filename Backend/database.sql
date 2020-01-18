@@ -14,13 +14,21 @@ CREATE TABLE USERS
     width FLOAT,
 	register_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
-CREATE TABLE HISTORIES (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    username VARCHAR(30),
-    image VARCHAR(100),
-    mask VARCHAR(100),
+    CREATE TABLE HISTORIES
+    (
+        id INT
+        AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR
+        (30),
+    image VARCHAR
+        (100),
+    mask VARCHAR
+        (100),
     angles LONGTEXT,
+    percent FLOAT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (username)
-        REFERENCES USERS (username)
+    FOREIGN KEY
+        (username)
+        REFERENCES USERS
+        (username)
 );

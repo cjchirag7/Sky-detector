@@ -19,14 +19,16 @@ class ViewMask extends Component {
     super(props);
     const mask = this.props.navigation.getParam('mask');
     const angles = this.props.navigation.getParam('angles');
+    const percent = this.props.navigation.getParam('percent');
     this.state = {
       imageUri: imageUrl + mask,
-      angles: JSON.parse(angles)
+      angles: JSON.parse(angles),
+      percent
     };
   }
 
   render() {
-    const { imageUri, angles } = this.state;
+    const { imageUri, angles, percent } = this.state;
     const contentInset = { top: 20, bottom: 20 };
     return (
       <ScrollView>
@@ -37,6 +39,10 @@ class ViewMask extends Component {
             style={styles.image}
           />
         </View>
+        <Text style={styles.headline}>
+          {' '}
+          Sky Region : {percent} % {'\n'}
+        </Text>
         <Text style={styles.headline}>Plot of Angles of Elevation</Text>
 
         <View style={{ height: 200, flexDirection: 'row' }}>
@@ -48,7 +54,7 @@ class ViewMask extends Component {
               fontSize: 10
             }}
             numberOfTicks={12}
-            formatLabel={value => `${value}º`}
+            formatLabel={value => `${value}\u00B0`}
           />
           <LineChart
             style={{ flex: 1, marginLeft: 8 }}
