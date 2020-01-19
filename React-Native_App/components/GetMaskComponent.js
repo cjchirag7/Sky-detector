@@ -98,8 +98,10 @@ class GetMask extends Component {
     const { imageUri, geocode } = this.state;
     const { street, name, city, postalCode, region } = geocode[0];
     let filename = imageUri.split('/').pop();
-    let addr1 = `${name}, ${street}`;
-    let addr2 = `${city}, ${region} - ${postalCode}`;
+    let addr1 = `${name != null ? name : ''}, ${street != null ? street : ''}`;
+    let addr2 = `${city != null ? city : ''}, ${
+      region != null ? region : ''
+    } - ${postalCode != null ? postalCode : ''}`;
     // Infer the type of the image
     let match = /\.(\w+)$/.exec(filename);
     let type = match ? `image/${match[1]}` : `image`;

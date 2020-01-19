@@ -214,85 +214,6 @@ const CustomDrawerComponent = props => (
     </SafeAreaView>
   </ScrollView>
 );
-const MainNavigator = createDrawerNavigator(
-  {
-    Login: {
-      screen: LoginNavigator,
-      navigationOptions: {
-        title: 'Login',
-        drawerLabel: 'Login',
-        drawerIcon: ({ tintColor, focused }) => (
-          <Icon
-            name='sign-in'
-            type='font-awesome'
-            size={24}
-            iconStyle={{ color: tintColor }}
-          />
-        )
-      }
-    },
-    Home: {
-      screen: HomeNavigator,
-      navigationOptions: {
-        title: 'Home',
-        drawerLabel: 'Home',
-        drawerIcon: ({ tintColor, focused }) => (
-          <Icon name='home' type='font-awesome' size={24} color={tintColor} />
-        )
-      }
-    },
-    GetMask: {
-      screen: GetMaskNavigator,
-      navigationOptions: {
-        title: 'Get Mask',
-        drawerLabel: 'Get Mask',
-        drawerIcon: ({ tintColor, focused }) => (
-          <Icon
-            name='file-image-o'
-            type='font-awesome'
-            size={20}
-            color={tintColor}
-          />
-        )
-      }
-    },
-    History: {
-      screen: HistoryNavigator,
-      navigationOptions: {
-        title: 'My History',
-        drawerLabel: 'History',
-        drawerIcon: ({ tintColor, focused }) => (
-          <Icon
-            name='history'
-            type='font-awesome'
-            size={20}
-            color={tintColor}
-          />
-        )
-      }
-    },
-    Contact: {
-      screen: ContactNavigator,
-      navigationOptions: {
-        title: 'Contact Us',
-        drawerLabel: 'Contact Us',
-        drawerIcon: ({ tintColor, focused }) => (
-          <Icon
-            name='address-card'
-            type='font-awesome'
-            size={24}
-            color={tintColor}
-          />
-        )
-      }
-    }
-  },
-  {
-    initialRouteName: 'Home',
-    drawerBackgroundColor: '#D1C4E9',
-    contentComponent: CustomDrawerComponent
-  }
-);
 
 class Main extends Component {
   componentDidMount() {
@@ -346,6 +267,91 @@ class Main extends Component {
     }
   };
   render() {
+    const MainNavigator = createDrawerNavigator(
+      {
+        Login: {
+          screen: LoginNavigator,
+          navigationOptions: {
+            title: 'Login',
+            drawerLabel: 'Login',
+            drawerIcon: ({ tintColor, focused }) => (
+              <Icon
+                name='sign-in'
+                type='font-awesome'
+                size={24}
+                iconStyle={{ color: tintColor }}
+              />
+            )
+          }
+        },
+        Home: {
+          screen: HomeNavigator,
+          navigationOptions: {
+            title: 'Home',
+            drawerLabel: 'Home',
+            drawerIcon: ({ tintColor, focused }) => (
+              <Icon
+                name='home'
+                type='font-awesome'
+                size={24}
+                color={tintColor}
+              />
+            )
+          }
+        },
+        GetMask: {
+          screen: GetMaskNavigator,
+          navigationOptions: {
+            title: 'Get Mask',
+            drawerLabel: 'Get Mask',
+            drawerIcon: ({ tintColor, focused }) => (
+              <Icon
+                name='file-image-o'
+                type='font-awesome'
+                size={20}
+                color={tintColor}
+              />
+            )
+          }
+        },
+        History: {
+          screen: HistoryNavigator,
+          navigationOptions: {
+            title: 'My History',
+            drawerLabel: 'History',
+            drawerIcon: ({ tintColor, focused }) => (
+              <Icon
+                name='history'
+                type='font-awesome'
+                size={20}
+                color={tintColor}
+              />
+            )
+          }
+        },
+        Contact: {
+          screen: ContactNavigator,
+          navigationOptions: {
+            title: 'Contact Us',
+            drawerLabel: 'Contact Us',
+            drawerIcon: ({ tintColor, focused }) => (
+              <Icon
+                name='address-card'
+                type='font-awesome'
+                size={24}
+                color={tintColor}
+              />
+            )
+          }
+        }
+      },
+      {
+        initialRouteName: 'Home',
+        drawerBackgroundColor: '#D1C4E9',
+        contentComponent: CustomDrawerComponent
+      }
+    );
+
     return (
       <View
         style={{

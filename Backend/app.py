@@ -223,6 +223,9 @@ def getMask():
         if 'image' not in request.files:
             return jsonify(error="No files selected")
         file = request.files['image']
+
+        print(file.filename)
+        print(file)
         # if user does not select file, browser also
         # submit an empty part without filename
         if file.filename == '':

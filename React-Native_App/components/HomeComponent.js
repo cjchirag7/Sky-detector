@@ -50,7 +50,12 @@ class Home extends Component {
             </Text>
           </Card.Content>
 
-          <Card.Cover source={{ uri: 'https://picsum.photos/700' }} />
+          <Card.Cover
+            source={{
+              uri:
+                'https://github-projects.s3.ap-south-1.amazonaws.com/samp2.jpeg'
+            }}
+          />
           <Card.Content>
             <Text>
               {'\n'}
